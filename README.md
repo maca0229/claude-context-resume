@@ -1,4 +1,4 @@
-# maca-claude-skills
+# claude-context-sync
 
 Custom Claude Code skills by [@maca0229](https://github.com/maca0229).
 
@@ -7,7 +7,7 @@ Custom Claude Code skills by [@maca0229](https://github.com/maca0229).
 Paste this into your Claude Code input box:
 
 ```
-! curl -fsSL https://raw.githubusercontent.com/maca0229/maca-claude-skills/main/install.sh | bash
+! curl -fsSL https://raw.githubusercontent.com/maca0229/claude-context-sync/main/install.sh | bash
 ```
 
 Then restart Claude Code.
