@@ -3,7 +3,7 @@
 
 set -e
 
-REPO="https://github.com/maca0229/claude-context-sync"
+REPO="https://github.com/maca0229/claude-context-resume"
 SKILLS_DIR="$HOME/.claude/skills"
 TMP_DIR=$(mktemp -d)
 
