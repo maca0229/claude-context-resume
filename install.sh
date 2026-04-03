@@ -23,5 +23,17 @@ for skill in "$TMP_DIR/skills"/*/; do
   cp -r "$skill" "$dest"
 done
 
+# Add session files to .gitignore if ~/.claude is a git repo
+if git -C "$HOME/.claude" rev-parse --git-dir > /dev/null 2>&1; then
+  GITIGNORE="$HOME/.claude/.gitignore"
+  if ! grep -q "projects/\*\*/\*.jsonl" "$GITIGNORE" 2>/dev/null; then
+    echo "projects/**/*.jsonl" >> "$GITIGNORE"
+    git -C "$HOME/.claude" add .gitignore
+    git -C "$HOME/.claude" commit -m "chore: ignore session jsonl files" --quiet 2>/dev/null || true
+    echo "Added session files to .gitignore"
+  fi
+fi
+
 rm -rf "$TMP_DIR"
 echo "Done! Restart Claude Code to use the new skills."
+
