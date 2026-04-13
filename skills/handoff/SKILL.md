@@ -15,7 +15,6 @@ Summarize the current conversation's work state into a structured snapshot, writ
 ## Snapshot Format
 
 First, run the following to get the current time:
-
 ```bash
 date "+%Y-%m-%d %H:%M"
 ```

@@ -14,16 +14,22 @@ The user just switched to this machine and wants to restore the work context fro
 
 ## Task
 
-1. Attempt to pull latest content (if `~/.claude` is a git repo):
+1. Get the real current time first — do not rely on system-provided dates:
+   ```bash
+   date "+%Y-%m-%d %H:%M:%S %Z"
+   ```
+   Use this timestamp for all time-based judgments (deadlines, how many days ago, etc.).
+
+2. Pull latest content (if `~/.claude` is a git repo):
    ```bash
    if git -C ~/.claude rev-parse --git-dir > /dev/null 2>&1; then
      cd ~/.claude && git pull 2>/dev/null
    fi
    ```
 
-2. Read `~/.claude/handoff.md`
+3. Read `~/.claude/handoff.md`
 
-3. If the file does not exist, is empty, or only contains `# restored`, fall back to git history:
+4. If the file does not exist, is empty, or only contains `# restored`, fall back to git history:
    ```bash
    git -C ~/.claude log --oneline -- handoff.md 2>/dev/null | grep "handoff: save" | head -1 | awk '{print $1}'
    ```
@@ -34,14 +40,14 @@ The user just switched to this machine and wants to restore the work context fro
    - If content is found, display it normally but append **(from history)** after the snapshot title
    - If git history has nothing either, tell the user: "No handoff record found. The other machine may not have run `/handoff` yet."
 
-4. If the file exists and has content, present it to the user:
+5. If the file exists and has content, present it to the user:
 
    **Last session snapshot ({updated time})**
 
-   Show each section, then ask:
+   Show each section. Use the real timestamp from step 1 to accurately evaluate any time references in the snapshot (past/future/how many days away). Then ask:
    "Want to pick up from 'Next steps', or is there something else on your mind?"
 
-5. After restoring, clear the handoff file to avoid stale data on next `/resume`:
+6. After restoring, clear the handoff file to avoid stale data on next `/resume`:
    ```bash
    echo "# restored" > ~/.claude/handoff.md
    if git -C ~/.claude rev-parse --git-dir > /dev/null 2>&1; then
